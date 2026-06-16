@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <!-- Atividade 3: Interface HTML Responsiva e Moderna -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Padaria Doce Sabor - Calculadora de Delivery</title>
+    
+    <style>
+        /* CSS Integrado para funcionamento imediato no seu celular e no GitHub Pages */
+        :root {
+            --cor-primaria: #8d6e63;     /* Marrom Padaria */
+            --cor-secundaria: #d84315;   /* Laranja de Destaque */
+            --cor-fundo: #faf8f5;        /* Creme Claro */
+            --cor-texto: #3e2723;        /* Marrom Escuro */
+            --cor-card: #ffffff;         /* Branco para os blocos */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            padding: 15px;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--cor-primaria);
+            color: white;
+            padding: 25px 15px;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: var(--cor-card);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid #efebe9;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            color: var(--cor-primaria);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #efebe9;
+            padding-bottom: 5px;
+        }
+
+        .form-grupo {
+            margin-bottom: 15px;
+        }
+
+        .form-grupo label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d7ccc8;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+            font-size: 1rem;
+            color: var(--cor-texto);
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--cor-secundaria);
+        }
+
+        .btn-calcular {
+            background-color: var(--cor-secundaria);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-calcular:active {
+            background-color: #b23300;
+        }
+
+        /* Box de Resultados / Recibo */
+        .recibo-box {
+            background-color: #fff8e1; /* Amarelo claro simulando recibo */
+            border: 2px dashed #ffe082;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .recibo-titulo {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--cor-primaria);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .recibo-linha {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            border-bottom: 1px dotted #ffe082;
+            padding-bottom: 4px;
+        }
+
+        .total-linha {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--cor-secundaria);
+            border-top: 2px dashed #ffe082;
+            border-bottom: none;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .badge-frete {
+            background-color: #2e7d32;
+            color: white;
+            text-align: center;
+            padding: 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.85rem;
+            color: #6d4c41;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header>
+            <h1>🥖 Padaria Doce Sabor</h1>
+            <p id="msg-boas-vindas">Bem-vinda ao sistema!</p>
+        </header>
+
+        <main>
+            <!-- Atividade 3: Interface HTML com campos para inserir dados do pedido -->
+            <section class="card">
+                <h2>📝 Calculadora de Delivery</h2>
+                
+                <div class="form-grupo">
+                    <label for="input-nome">Nome do Cliente:</label>
+                    <input type="text" id="input-nome" class="form-control" value="Tatiane Souza" placeholder="Digite o nome do cliente" oninput="atualizarBoasVindas()">
+                </div>
+
+                <div class="form-grupo">
+                    <label for="input-preco">Preço Unitário do Produto (R$):</label>
+                    <input type="number" id="input-preco" class="form-control" value="12.50" step="0.10" min="0">
+                </div>
+
+                <div class="form-grupo">
+                    <label for="input-qtd">Quantidade de Itens:</label>
+                    <input type="number" id="input-qtd" class="form-control" value="3" min="1">
+                </div>
+
+                <div class="form-grupo">
+                    <label for="input-desconto">Percentual de Desconto (%):</label>
+                    <input type="number" id="input-desconto" class="form-control" value="10" min="0" max="100">
+                </div>
+
+                <div class="form-grupo">
+                    <label for="input-distancia">Distância para Entrega (km):</label>
+                    <input type="number" id="input-distancia" class="form-control" value="4" min="0">
+                </div>
+
+                <button class="btn-calcular" onclick="processarPedido()">Calcular Pedido Completo</button>
+            </section>
+
+            <!-- Atividade 3: Área para exibir os resultados -->
+            <section class="card" id="secao-resultado" style="display: none;">
+                <h2>🧾 Recibo do Delivery</h2>
+                <div class="recibo-box">
+                    <div class="recibo-titulo">Demonstrativo de Valores</div>
+                    
+                    <div class="recibo-linha">
+                        <span>Subtotal do Pedido:</span>
+                        <span id="res-subtotal">R$ 0,00</span>
+                    </div>
+                    <div class="recibo-linha">
+                        <span>Desconto Aplicado:</span>
+                        <span id="res-desconto">R$ 0,00</span>
+                    </div>
+                    <div class="recibo-linha">
+                        <span>Imposto (8%):</span>
+                        <span id="res-imposto">R$ 0,00</span>
+                    </div>
+                    <div class="recibo-linha">
+                        <span>Taxa de Entrega:</span>
+                        <span id="res-taxa">R$ 0,00</span>
+                    </div>
+                    <div class="recibo-linha total-linha">
+                        <span>Total do Pedido:</span>
+                        <span id="res-total">R$ 0,00</span>
+                    </div>
+                </div>
+
+                <!-- Alerta de Frete Grátis (Atividade 2) -->
+                <div class="badge-frete" id="alerta-frete">
+                    🎉 Parabéns! Você ganhou Entrega Grátis neste pedido!
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Desenvolvido por Tatiane Nascimento De Souza - Prática 10</p>
+        </footer>
+
+    </div>
+
+    <!-- LÓGICA JAVASCRIPT DAS ATIVIDADES 1, 2 E 4 -->
+    <script>
+        // ATIVIDADE 1: Função básica de boas-vindas
+        function exibirBoasVindas(nome) {
+            return `Olá, ${nome}! Seja bem-vinda ao painel de Delivery.`;
+        }
+
+        // Atualização de boas-vindas dinâmica ao digitar (Atividade 3)
+        function atualizarBoasVindas() {
+            const nome = document.getElementById('input-nome').value || "Cliente";
+            document.getElementById('msg-boas-vindas').innerText = exibirBoasVindas(nome);
+        }
+
+        // Executa boas-vindas inicial
+        window.onload = atualizarBoasVindas;
+
+        // ATIVIDADE 4: Arrow Functions (Conversão de 3 funções tradicionais)
+        // 1. Função de cálculo do subtotal (recebe preço e quantidade) - Atividade 1
+        const calcularSubtotal = (preco, quantidade) => preco * quantidade;
+
+        // 2. Função de cálculo do desconto (recebe valor e percentual) - Atividade 1
+        const calcularDesconto = (valor, percentual) => valor * (percentual / 100);
+
+        // 3. Função de retorno do imposto (8% sobre o subtotal) - Atividade 2
+        const calcularImposto = (subtotal) => subtotal * 0.08;
+
+        // ATIVIDADE 1: Função que calcula a taxa de entrega baseada na distância
+        function calcularTaxaEntrega(distancia) {
+            // Regra: R$ 2,50 por km, com taxa mínima de R$ 5,00
+            let taxaCalculada = distancia * 2.50;
+            return taxaCalculada < 5.00 ? 5.00 : taxaCalculada;
+        }
+
+        // ATIVIDADE 2: Função que verifica se o cliente tem direito a frete grátis (> R$ 50)
+        function verificarFreteGratis(subtotal) {
+            return subtotal > 50.00;
+        }
+
+        // ATIVIDADE 2: Função que retorna o valor total final do pedido
+        function calcularTotalFinal(subtotal, desconto, imposto, taxaEntrega) {
+            return (subtotal - desconto) + imposto + taxaEntrega;
+        }
+
+        // ATIVIDADE 3: Processador e consolidador da Aplicação Prática Completa
+        function processarPedido() {
+            // Capturar entradas digitadas
+            const preco = parseFloat(document.getElementById('input-preco').value) || 0;
+            const qtd = parseInt(document.getElementById('input-qtd').value) || 0;
+            const descPercentual = parseFloat(document.getElementById('input-desconto').value) || 0;
+            const distancia = parseFloat(document.getElementById('input-distancia').value) || 0;
+
+            // Executar as funções criadas
+            const subtotal = calcularSubtotal(preco, qtd);
+            const desconto = calcularDesconto(subtotal, descPercentual);
+            const imposto = calcularImposto(subtotal);
+            
+            // Lógica de frete grátis (Atividade 2)
+            let taxaEntrega = calcularTaxaEntrega(distancia);
+            const temFreteGratis = verificarFreteGratis(subtotal);
+            
+            if (temFreteGratis) {
+                taxaEntrega = 0.00; // Isenção da taxa de entrega
+                document.getElementById('alerta-frete').style.display = 'block';
+            } else {
+                document.getElementById('alerta-frete').style.display = 'none';
+            }
+
+            const totalFinal = calcularTotalFinal(subtotal, desconto, imposto, taxaEntrega);
+
+            // Renderizar resultados formatados na interface
+            document.getElementById('res-subtotal').innerText = formatarValor(subtotal);
+            document.getElementById('res-desconto').innerText = formatarValor(desconto);
+            document.getElementById('res-imposto').innerText = formatarValor(imposto);
+            document.getElementById('res-taxa').innerText = formatarValor(taxaEntrega);
+            document.getElementById('res-total').innerText = formatarValor(totalFinal);
+
+            // Exibir a seção de resultados
+            document.getElementById('secao-resultado').style.display = 'block';
+        }
+
+        // Helper para formatar moeda
+        const formatarValor = (valor) => "R$ " + valor.toFixed(2).replace('.', ',');
+    </script>
+</body>
+</html>
+
+
